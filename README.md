@@ -11,6 +11,7 @@ Home Assistant integration for Domestia home automation systems.
 - ✅ **Climate**: Control thermostats (basic support)
 - ✅ **Real-time updates**: Automatic state synchronization
 - ✅ **Configurable polling**: Adjust update interval (1-60 seconds)
+- ✅ **Debug mode**: Optional detailed logging for troubleshooting
 
 ## Installation
 
@@ -28,8 +29,9 @@ Home Assistant integration for Domestia home automation systems.
 
 ### Manual Installation
 
-1. Copy the `custom_components/domestia` folder to your Home Assistant `custom_components` directory
-2. Restart Home Assistant
+1. Download the latest release
+2. Copy the `custom_components/domestia` folder to your Home Assistant `custom_components` directory
+3. Restart Home Assistant
 
 ## Configuration
 
@@ -45,11 +47,30 @@ Home Assistant integration for Domestia home automation systems.
 After adding the integration, you can configure:
 
 - **Scan Interval**: How often to poll the Domestia system (1-60 seconds, default: 5)
+- **Debug Mode**: Enable detailed logging for troubleshooting (default: OFF)
 
 To change options:
 1. Go to **Settings** → **Devices & Services**
 2. Find your Domestia integration
 3. Click **Configure**
+
+## Logging
+
+By default, the integration uses minimal logging (INFO level). 
+
+### Enable Debug Mode via UI
+1. Go to Settings → Devices & Services → Domestia → Configure
+2. Enable "Debug Mode"
+3. Check logs for detailed information
+
+### Enable Debug Logging via configuration.yaml
+
+```yaml
+logger:
+  default: info
+  logs:
+    custom_components.domestia: debug
+```
 
 ## Supported Devices
 
@@ -66,20 +87,14 @@ To change options:
 ### Climate
 - Thermostats with temperature sensors (Type 11)
 
+## Performance Tips
+
+- **Fast polling (1-2s)**: More responsive, higher network load
+- **Normal polling (5s)**: Good balance (default)
+- **Slow polling (10-30s)**: Lower network load, less responsive
+- **Debug mode**: Only enable when troubleshooting, then disable to reduce log size
+
 ## Troubleshooting
-
-### Enable Debug Logging
-
-Add to your `configuration.yaml`:
-
-```yaml
-logger:
-  default: info
-  logs:
-    custom_components.domestia: debug
-```
-
-### Common Issues
 
 **Devices not responding:**
 - Verify the IP address is correct
@@ -88,11 +103,15 @@ logger:
 
 **State not updating:**
 - Decrease the scan interval in options
-- Check logs for connection errors
+- Enable debug mode and check logs for connection errors
 
 **Wrong device states:**
 - Reload the integration
 - Check for firmware updates on your Domestia controller
+
+**Too much logging:**
+- Disable debug mode in integration options
+- Set logger level to INFO in configuration.yaml
 
 ## Credits
 
@@ -104,4 +123,4 @@ MIT License - see LICENSE file for details
 
 ## Support
 
-For issues and feature requests, please use the [GitHub issue tracker](https://github.com/YOUR_USERNAME/domestia-homeassistant/issues).
+For issues and feature requests, please use the GitHub issue tracker.

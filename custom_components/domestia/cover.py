@@ -11,7 +11,7 @@ _LOGGER = logging.getLogger(__name__)
 
 
 async def async_setup_entry(hass, entry, add_entities):
-    _LOGGER.warning("Domestia Cover: async_setup_entry called")
+    _LOGGER.debug("Domestia Cover: async_setup_entry called")
     
     data = hass.data[DOMAIN][entry.entry_id]
     network = data["network"]
@@ -24,7 +24,7 @@ async def async_setup_entry(hass, entry, add_entities):
         if acc["category"] == "cover"
     ]
 
-    _LOGGER.warning(f"Domestia Cover: Adding {len(covers)} cover entities")
+    _LOGGER.debug(f"Cover: Adding {len(covers)} cover entities")
     add_entities(covers)
 
 
@@ -37,7 +37,7 @@ class DomestiaCover(CoordinatorEntity, CoverEntity):
         self.acc = acc
         self._target_position = 50
         
-        _LOGGER.warning(f"Domestia Cover: Created entity ID={acc['id']}, Name={acc.get('name')}")
+        _LOGGER.debug(f"Cover: Created entity ID={acc['id']}, Name={acc.get('name')}")
 
     @property
     def name(self):
@@ -111,7 +111,7 @@ class DomestiaCover(CoordinatorEntity, CoverEntity):
         position = self.current_cover_position
         closing = self.is_closing
         opening = self.is_opening
-        _LOGGER.warning(f"Domestia Cover {self.acc['id']} '{self.acc.get('name')}': Update received - pos={position}, closing={closing}, opening={opening}")
+        _LOGGER.debug(f"Cover {self.acc['id']} '{self.acc.get('name')}': Update received - pos={position}, closing={closing}, opening={opening}")
         self.async_write_ha_state()
 
     async def async_set_cover_position(self, **kwargs):
@@ -119,7 +119,7 @@ class DomestiaCover(CoordinatorEntity, CoverEntity):
         position = kwargs.get("position", 50)
         self._target_position = position
         
-        _LOGGER.warning(f"Domestia Cover {self.acc['id']} '{self.acc.get('name')}': Set position to {position}")
+        _LOGGER.debug(f"Cover {self.acc['id']} '{self.acc.get('name')}': Set position to {position}")
         
         # Send position + 128 as per JS implementation
         # ATWRELAIS command: [255, 0, 0, 3, 150, id+1, position+128]
@@ -130,17 +130,17 @@ class DomestiaCover(CoordinatorEntity, CoverEntity):
 
     async def async_open_cover(self, **kwargs):
         """Open the cover."""
-        _LOGGER.warning(f"Domestia Cover {self.acc['id']} '{self.acc.get('name')}': OPEN")
+        _LOGGER.debug(f"Cover {self.acc['id']} '{self.acc.get('name')}': OPEN")
         await self.async_set_cover_position(position=100)
 
     async def async_close_cover(self, **kwargs):
         """Close the cover."""
-        _LOGGER.warning(f"Domestia Cover {self.acc['id']} '{self.acc.get('name')}': CLOSE")
+        _LOGGER.debug(f"Cover {self.acc['id']} '{self.acc.get('name')}': CLOSE")
         await self.async_set_cover_position(position=0)
 
     async def async_stop_cover(self, **kwargs):
         """Stop the cover."""
-        _LOGGER.warning(f"Domestia Cover {self.acc['id']} '{self.acc.get('name')}': STOP")
+        _LOGGER.debug(f"Cover {self.acc['id']} '{self.acc.get('name')}': STOP")
         
         # Send current position to stop (without +128 flag)
         current_pos = self.current_cover_position

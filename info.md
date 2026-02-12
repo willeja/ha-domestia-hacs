@@ -17,12 +17,15 @@ Control your Domestia home automation system directly from Home Assistant.
 4. Search for "Domestia"
 5. Enter IP and MAC address of your Domestia controller
 
-## Configuration
+## Configuration Options
 
-After installation, you can configure the polling interval (how often Home Assistant checks for updates):
-- Default: 5 seconds
-- Range: 1-60 seconds
-- Lower values = more responsive but more network traffic
+**Scan Interval** (1-60 seconds, default: 5)
+- How often to check for updates
+- Lower = more responsive, higher network load
+
+**Debug Mode** (default: OFF)
+- Enable detailed logging for troubleshooting
+- Disable when not needed to reduce log size
 
 ## Requirements
 
